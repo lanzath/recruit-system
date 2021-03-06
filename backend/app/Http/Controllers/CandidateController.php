@@ -41,7 +41,7 @@ class CandidateController extends Controller
      */
     public function show(Candidate $candidate) :JsonResponse
     {
-        return response()->json($candidate->load('technologies'), 200);
+        return response()->json($candidate, 200);
     }
 
     /**
