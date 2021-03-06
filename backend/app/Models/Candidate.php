@@ -22,6 +22,30 @@ class Candidate extends Model
         'linkedin_url',
       ];
 
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['candidate_technologies'];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = ['technologies'];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d h:m',
+        'updated_at' => 'datetime:Y-m-d h:m',
+    ];
+
 
     //-------------------------------------------
     // Relations
@@ -32,8 +56,32 @@ class Candidate extends Model
      *
      * @return HasMany
      */
-    public function technologies(): HasMany
+    public function technologies() :HasMany
     {
       return $this->hasMany(CandidateTechnology::class);
+    }
+
+    //-------------------------------------------
+    // Acessors
+    //-------------------------------------------
+
+    /**
+     * Return candidate's list of qualification.
+     *
+     * @return object
+     */
+    public function getCandidateTechnologiesAttribute() :object
+    {
+      $qualifications = collect();
+
+      if ($this->technologies) {
+          foreach ($this->technologies as $qualification) {
+            $qualifications->push($qualification->technology);
+          }
+
+          return $qualifications;
+      }
+
+      return null;
     }
 }
