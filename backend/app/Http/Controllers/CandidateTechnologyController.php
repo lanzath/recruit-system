@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\CandidateTechnology;
 use App\Http\Requests\CandidateTechnology\StoreRequest;
@@ -15,7 +14,7 @@ class CandidateTechnologyController extends Controller
      *
      * @return JsonResponse
      */
-    public function index() :JsonResponse
+    public function index(): JsonResponse
     {
         return response()->json(CandidateTechnology::paginate(10), 200);
     }
@@ -23,14 +22,19 @@ class CandidateTechnologyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
-     * @return JsonResponse
+     * @param  StoreRequest  $request
+     * @return void
      */
-    public function store(StoreRequest $request) :JsonResponse
+    public function store(StoreRequest $request): JsonResponse
     {
-        $candidate = CandidateTechnology::create($request->validated());
+        foreach ($request->technology as $technology) {
+            $technology = CandidateTechnology::create([
+                'candidate_id' => $request->candidate_id,
+                'technology' => $technology,
+            ]);
+        }
 
-        return response()->json($candidate, 201);
+        return response()->json($technology, 201);
     }
 
     /**
@@ -39,7 +43,7 @@ class CandidateTechnologyController extends Controller
      * @param  CandidateTechnology $candidate
      * @return JsonResponse
      */
-    public function show(CandidateTechnology $candidate) :JsonResponse
+    public function show(CandidateTechnology $candidate): JsonResponse
     {
         return response()->json($candidate, 200);
     }
@@ -47,11 +51,11 @@ class CandidateTechnologyController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request   $request
+     * @param  UpdateRequest       $request
      * @param  CandidateTechnology $candidate
      * @return JsonResponse
      */
-    public function update(UpdateRequest $request, $candidate) :JsonResponse
+    public function update(UpdateRequest $request, $candidate): JsonResponse
     {
         return response()->json($candidate->update($request->validated()), 200);
     }
@@ -62,7 +66,7 @@ class CandidateTechnologyController extends Controller
      * @param  CandidateTechnology $candidate
      * @return JsonResponse
      */
-    public function destroy(CandidateTechnology $candidate) :JsonResponse
+    public function destroy(CandidateTechnology $candidate): JsonResponse
     {
         $candidate->delete();
 
