@@ -24,8 +24,7 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'candidate_id' => 'required|integer|',
-            'technology' => 'required|string|min:1|max:64',
+            'technology' => 'required|array',
         ];
     }
 }

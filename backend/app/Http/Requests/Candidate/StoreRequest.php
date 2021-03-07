@@ -28,6 +28,7 @@ class StoreRequest extends FormRequest
             'email' => 'required|string|email|min:3|max:255',
             'age' => 'required|integer',
             'linkedin_url' => 'required|string|min:3|max:255',
+            'technology' => 'required|array',
         ];
     }
 }
