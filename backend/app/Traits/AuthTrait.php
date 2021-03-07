@@ -20,7 +20,7 @@ trait AuthTrait
      * @param  LoginRequest  $request
      * @return array
      */
-    protected function getCredentials(LoginRequest $request) :array
+    protected function getCredentials(LoginRequest $request): array
     {
         return $request->only('email', 'password');
     }
@@ -40,7 +40,7 @@ trait AuthTrait
      *
      * @return object
      */
-    protected function handleAuthorization() :object
+    protected function handleAuthorization(): object
     {
         return $this->user->createToken('Personal Access Token');
     }
@@ -51,7 +51,7 @@ trait AuthTrait
      * @param  LoginRequest  $request
      * @return JsonResponse
      */
-    protected function handleLogin(LoginRequest $request) :JsonResponse
+    protected function handleLogin(LoginRequest $request): JsonResponse
     {
         $this->credentials = $this->getCredentials($request);
 
@@ -82,7 +82,7 @@ trait AuthTrait
      * @param  Request  $request
      * @return JsonResponse
      */
-    protected function handleLogout(Request $request) :JsonResponse
+    protected function handleLogout(Request $request): JsonResponse
     {
         $this->user = $request->user()->token()->revoke();
 

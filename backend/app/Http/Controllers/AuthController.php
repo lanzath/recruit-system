@@ -17,7 +17,7 @@ class AuthController extends Controller
      * @param  LoginRequest $request
      * @return JsonResponse
      */
-    public function login(LoginRequest $request) :JsonResponse
+    public function login(LoginRequest $request): JsonResponse
     {
         return $this->handleLogin($request);
     }
@@ -28,7 +28,7 @@ class AuthController extends Controller
      * @param  Request $request
      * @return JsonResponse
      */
-    public function logout(Request $request) :JsonResponse
+    public function logout(Request $request): JsonResponse
     {
         $request->user()->token()->revoke();
 
@@ -41,7 +41,7 @@ class AuthController extends Controller
      * @param  Request $request
      * @return JsonResponse
      */
-    public function user(Request $request) :JsonResponse
+    public function user(Request $request): JsonResponse
     {
         return response()->json($request->user());
     }
