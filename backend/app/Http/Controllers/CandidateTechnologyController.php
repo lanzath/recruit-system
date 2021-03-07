@@ -43,21 +43,21 @@ class CandidateTechnologyController extends Controller
      * @param  CandidateTechnology $candidate
      * @return JsonResponse
      */
-    public function show(CandidateTechnology $candidate): JsonResponse
+    public function show(CandidateTechnology $candidateTechnology): JsonResponse
     {
-        return response()->json($candidate, 200);
+        return response()->json($candidateTechnology, 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  UpdateRequest       $request
-     * @param  CandidateTechnology $candidate
+     * @param  CandidateTechnology $candidateTechnology
      * @return JsonResponse
      */
-    public function update(UpdateRequest $request, $candidate): JsonResponse
+    public function update(UpdateRequest $request, CandidateTechnology $candidateTechnology): JsonResponse
     {
-        return response()->json($candidate->update($request->validated()), 200);
+        return response()->json($candidateTechnology->update($request->validated()), 200);
     }
 
     /**
@@ -66,9 +66,9 @@ class CandidateTechnologyController extends Controller
      * @param  CandidateTechnology $candidate
      * @return JsonResponse
      */
-    public function destroy(CandidateTechnology $candidate): JsonResponse
+    public function destroy(CandidateTechnology $candidateTechnology): JsonResponse
     {
-        $candidate->delete();
+        $candidateTechnology->delete();
 
         return response()->json([], 204);
     }
