@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -56,9 +57,27 @@ class Candidate extends Model
      *
      * @return HasMany
      */
-    public function technologies() :HasMany
+    public function technologies(): HasMany
     {
       return $this->hasMany(CandidateTechnology::class);
+    }
+
+    //-------------------------------------------
+    // Scopes
+    //-------------------------------------------
+
+    /**
+     * Local scope to filter by candidate's technology.
+     *
+     * @param  mixed  $query
+     * @param  string $filter
+     * @return Builder
+     */
+    public function scopeTechnology($query, string $filter)
+    {
+        return $query->whereHas('technologies', function (Builder $query) use ($filter) {
+            $query->where('technology', 'LIKE', '%' . $filter . '%');
+        });
     }
 
     //-------------------------------------------
@@ -70,7 +89,7 @@ class Candidate extends Model
      *
      * @return object
      */
-    public function getCandidateTechnologiesAttribute() :object
+    public function getCandidateTechnologiesAttribute(): object
     {
       $qualifications = collect();
 
