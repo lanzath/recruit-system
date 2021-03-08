@@ -1,7 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CandidateController;
+use App\Http\Controllers\CandidateTechnologyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +15,18 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::prefix('v1')->group(function () {
+    Route::prefix('auth')->group(function () {
+        Route::post('login', [AuthController::class, 'login']);
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+        Route::group(['middleware' => 'auth:api'], function () {
+            Route::get('logout', [AuthController::class, 'logout']);
+        });
+    });
+
+    Route::middleware(['auth:api', 'cors'])->group(function () {
+        Route::apiResource('candidates', CandidateController::class);
+
+        Route::apiResource('candidate-technology', CandidateTechnologyController::class);
+    });
 });
