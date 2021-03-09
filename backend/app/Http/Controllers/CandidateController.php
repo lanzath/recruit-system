@@ -39,7 +39,9 @@ class CandidateController extends Controller
         $candidate = DB::transaction(function () use ($request) {
             $candidate = Candidate::create($request->validated());
 
-            return response()->json($candidate->technologies()->createMany($request->technology), 201);
+            $candidate->technologies()->createMany($request->technology);
+
+            return response()->json($candidate, 201);
         }, 1);
 
         return $candidate;
