@@ -1,52 +1,28 @@
 <template>
-  <div class="">
-    <main class="">
+    <main class="container-fluid">
       <div class="row">
         <div class="col-md-12">
           <h3>Criar novo candidato</h3>
           <Form class="new-candidate" @res="createdCandidate" />
         </div>
       </div>
-      <div class="row">
-        <div class="col-sm-12 pt-4">
-          <h1>Lista de candidatos</h1>
 
-          <div class="table-responsive">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">nome</th>
-                  <th scope="col">email</th>
-                  <th scope="col">tecnologias</th>
-                  <th scope="col">linkedin</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="item in data" :key="item.id">
-                  <td>{{ item.name }}</td>
-                  <td>{{ item.email }}</td>
-                  <td>{{ item.candidate_technologies.toString() }}</td>
-                  <td>{{ item.linkedin_url }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+      <Table :data="data" />
 
     </main>
     <!-- <Footer /> -->
-  </div>
 </template>
 
 <script>
 import Form from '@/components/Form'
+import Table from '@/components/Table'
 
 import axios from 'axios'
 
 export default {
   components: {
-    Form
+    Form,
+    Table,
   },
   name: 'Home',
   props: {},
@@ -63,14 +39,13 @@ export default {
     }
   },
 
-  mounted() {
-    axios.get('http://127.0.0.1:8000/api/v1/candidates').then(response => (this.data = response.data.data))
+  async mounted() {
+    await axios.get('http://127.0.0.1:8000/api/v1/candidates').then(response => (this.data = response.data.data))
     console.log(this.data)
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
   margin: 40px 0 0;
@@ -82,14 +57,6 @@ ul {
 li {
   display: inline-block;
   margin: 0 10px;
-}
-
-thead {
-  background-color: #ccc;
-}
-
-tr:nth-child(even) {
-  background-color: #dddddd;
 }
 
 .new-candidate {
