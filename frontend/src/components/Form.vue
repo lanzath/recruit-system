@@ -48,7 +48,7 @@
         ></b-form-input>
       </b-form-group>
 
-      <b-form-group id="input-group-5">
+      <b-form-group id="input-group-5" label="Tecnologias:" label-for="checkboxes-5">
         <b-form-checkbox-group
           v-model="form.technology"
           id="checkboxes-5"
@@ -65,8 +65,10 @@
         </b-form-checkbox-group>
       </b-form-group>
 
-      <b-button type="submit" variant="primary">Submit</b-button>
-      <b-button type="reset" variant="danger">Reset</b-button>
+      <div class="buttons">
+        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-button type="reset" variant="danger">Reset</b-button>
+      </div>
     </b-form>
     <!-- <b-card class="mt-3" header="Form Data Result">
       <pre class="m-0">{{ form }}</pre>
@@ -131,5 +133,9 @@ export default {
 </script>
 
 <style>
-
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px
+}
 </style>
