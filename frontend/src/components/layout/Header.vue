@@ -18,6 +18,8 @@ export default {
    height: 60px;
    width: 100%;
    display: flex;
+   align-items: center;
+   justify-content: center;
    background-color: #1485ee;
  }
 
@@ -25,9 +27,10 @@ export default {
    display: flex;
    width: 100vw;
    gap: 20px;
-   align-items: center;
+   align-self: center;
    justify-content: center;
    list-style: none;
+   margin: 0;
  }
 
  .header-container ul.menu li a {
