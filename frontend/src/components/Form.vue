@@ -65,9 +65,11 @@
         </b-form-checkbox-group>
       </b-form-group>
 
+      <h5 class="error" v-for="(error, index) in this.errors" :key="index">{{ error }}</h5>
+
       <div class="buttons">
-        <b-button type="submit" variant="primary">Submit</b-button>
-        <b-button type="reset" variant="danger">Reset</b-button>
+        <b-button type="submit" variant="primary">Enviar</b-button>
+        <b-button type="reset" variant="danger">Limpar</b-button>
       </div>
     </b-form>
     <!-- <b-card class="mt-3" header="Form Data Result">
@@ -81,54 +83,74 @@ import axios from 'axios'
 
 export default {
   name: 'Form',
-  props: {},
+  props: {
+    id: String
+  },
 
   data() {
-      return {
-        form: {
-          name: '',
-          email: '',
-          linkedin_url: '',
-          age: null,
-          technology: []
-        },
-        show: true
+    return {
+      form: {
+        name: '',
+        email: '',
+        linkedin_url: '',
+        age: null,
+        technology: []
+      },
+      errors: [],
+      show: true
+    }
+  },
+
+  methods: {
+    async onSubmit(event) {
+      event.preventDefault()
+
+      if (this.id) {
+        const id = this.id
+        this.handleTechnologies()
+        try {
+          await axios.put(`http://127.0.0.1:8000/api/v1/candidates/${id}`, this.form)
+          this.$router.push('/')
+          this.onReset(event)
+        } catch (err) {
+          this.errors.push('Email já cadastrado.')
+        }
+      } else {
+        this.handleTechnologies()
+        try {
+          const response = await axios.post('http://127.0.0.1:8000/api/v1/candidates', this.form)
+          this.$emit('res', response)
+          this.onReset(event)
+        } catch (err) {
+          this.errors.push('Email já cadastrado.')
+        }
       }
     },
 
-    methods: {
-      async onSubmit(event) {
-        event.preventDefault()
-        this.handleTechnologies()
-        const response = await axios.post('http://127.0.0.1:8000/api/v1/candidates', this.form)
-        this.$emit('res', response)
-        this.onReset(event)
-      },
+    handleTechnologies() {
+      const techs = this.form.technology
+      this.form.technology = []
 
-      handleTechnologies() {
-        const techs = this.form.technology
-        this.form.technology = []
+      techs.forEach(t => this.form.technology.push({ technology: t}))
+    },
 
-        techs.forEach(t => this.form.technology.push({ technology: t}))
-      },
+    onReset(event) {
+      event.preventDefault()
 
-      onReset(event) {
-        event.preventDefault()
+      // Reset our form values
+      this.form.email = ''
+      this.form.name = ''
+      this.form.age = ''
+      this.form.linkedin_url = ''
+      this.form.technology = []
 
-        // Reset our form values
-        this.form.email = ''
-        this.form.name = ''
-        this.form.age = ''
-        this.form.linkedin_url = ''
-        this.form.technology = []
-
-        // Trick to reset/clear native browser form validation state
-        this.show = false
-        this.$nextTick(() => {
-          this.show = true
-        })
-      }
+      // Trick to reset/clear native browser form validation state
+      this.show = false
+      this.$nextTick(() => {
+        this.show = true
+      })
     }
+  }
 }
 </script>
 
@@ -137,5 +159,10 @@ export default {
   display: flex;
   justify-content: center;
   gap: 12px
+}
+
+.error {
+  text-align: center;
+  color: red;
 }
 </style>
