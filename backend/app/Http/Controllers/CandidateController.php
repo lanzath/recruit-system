@@ -7,11 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\Candidate\StoreRequest;
 use App\Http\Requests\Candidate\UpdateRequest;
+use App\Models\CandidateTechnology;
 use Illuminate\Support\Facades\DB;
 
 class CandidateController extends Controller
 {
-   /**
+    /**
      * Display a listing of the resource.
      *
      * @return JsonResponse
@@ -67,7 +68,19 @@ class CandidateController extends Controller
      */
     public function update(UpdateRequest $request, Candidate $candidate): JsonResponse
     {
-        return response()->json($candidate->update($request->validated()), 200);
+        // Updates a candidate and it's technologies
+        $update = DB::transaction(function () use ($candidate, $request) {
+            $candidate->update($request->validated());
+
+            // Handle candidate technologie's update request
+            foreach ($request->technology as $technology) {
+                CandidateTechnology::where('id', $technology['id'])->update($technology);
+            }
+
+            return response()->json($candidate, 200);
+        }, 1);
+
+        return $update;
     }
 
     /**
