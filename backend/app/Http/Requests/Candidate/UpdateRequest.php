@@ -27,7 +27,7 @@ class UpdateRequest extends FormRequest
             'name' => 'required|string|min:3|max:255',
             'email' => 'required|unique:candidates,email|string|email|min:3|max:255',
             'age' => 'required|integer',
-            'linkedin_url' => 'required|string|min:3|max:255',
+            'linkedin_url' => 'required|unique:candidates,linkedin_url|string|min:3|max:255',
             'technology' => 'required|array',
         ];
     }
