@@ -95,7 +95,10 @@ class Candidate extends Model
 
       if ($this->technologies) {
           foreach ($this->technologies as $qualification) {
-            $qualifications->push($qualification->technology);
+            $qualifications->push([
+                'id' => $qualification->id,
+                'technology' => $qualification->technology
+            ]);
           }
 
           return $qualifications;
