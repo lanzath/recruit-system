@@ -25,7 +25,7 @@ class CandidateController extends Controller
             return response()->json($candidates, 200);
         };
 
-        return response()->json(Candidate::paginate(10), 200);
+        return response()->json(Candidate::all(), 200);
     }
 
     /**
